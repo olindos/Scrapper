@@ -30,7 +30,8 @@ attr_accessor :parse_page
   def get_span
     spans = perform.css("span")
     spans.each do |span|
-      a = { span.name => {span.text => {type: span.name, selector: "css", identifier: span.css_path }}}
+      a = { span.name => {span.text => {type: span.name, selector: "css", class: span['class'],
+        identifier: span.css_path }}}
       puts a
     end
   end
@@ -38,25 +39,34 @@ attr_accessor :parse_page
   def get_link
     links = perform.css("link")
     links.each do |link|
-      a = { link.name => {link.text => {type: link.name, selector: "css", identifier: link.css_path }}}
+      a = { link.name => {link['title'] => {type: link['rel'], selector: "css", link: link['href'],
+        identifier: link.css_path }}}
       puts a
     end
   end
 
   def get_select_list
-    perform.css("select_list")
+    lists = perform.css("select_list")
+    puts lists
   end
 
   def get_checkbox
-    perform.css("checkbox")
+    checkboxs = perform.css("checkbox")
+    puts checkboxs
   end
 
   def get_radio
-    perform.css("radio")
+    radios = perform.css("radio")
+    puts radios
   end
 
   def get_div
-    perform.css("div")
+    divs = perform.css("div")
+    divs.each do |div|
+      a = { div.name => {div['id'] => {type: div.name, selector: "css", class: div['class'],
+        identifier: div.css_path }}}
+      puts a
+    end
   end
 
   scraper = Scraper.new
@@ -64,5 +74,9 @@ attr_accessor :parse_page
   button = scraper.get_button
   span = scraper.get_span
   link = scraper.get_link
-
+  select_list = scraper.get_select_list
+  checkbox = scraper.get_checkbox
+  radio = scraper.get_radio
+  div = scraper.get_div
+  
 end
